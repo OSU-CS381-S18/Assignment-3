@@ -8,14 +8,14 @@ data Cmd = LD Int
          | SWAP
          | POP Int
 
-type rank = Int
-type stackRank = (Int,Int)
+type Rank = Int
+type CmdRank = (Int,Int)
 
-ranking :: Cmd -> stackRank
-ranking LD = (0,1)
-ranking ADD = (2,1)
-ranking MULT = (2,1)
-ranking DUP = (1,2)
-ranking INC = (1,1)
-ranking SWAP = (2,2)
-ranking (POP k) = (k,0)
+rankC :: Cmd -> CmdRank
+rankC LD = (0,1)
+rankC ADD = (2,1)
+rankC MULT = (2,1)
+rankC DUP = (1,2)
+rankC INC = (1,1)
+rankC SWAP = (2,2)
+rankC (POP k) = (k,0)
