@@ -35,7 +35,7 @@ rank [] r = Just r
 rank (prog:stack) r = if n <= r
                       then rank stack ((r-n)+m) -- ((r-n)+m) calculates the rank current Rank r - the expected number of elements the
                       else Nothing --                operation takes n + the number of elements the opperation puts back onto the stack m. 
-                      where (n,m) = rankC prog--     --Example: Let current stack size be 3 = r Add(2,1) n = 2 and m = 2 ((3-2)+1) = 2 the new stack rank/size.
+                      where (n,m) = rankC prog--     --Example: Let current stack size be 3 = r Add(2,1) n = 2 and m = 1 ((3-2)+1) = 2 the new stack rank/size.
 -- Problem b --
 -- Reusing some code from HW2
 type Stack = [Int]
