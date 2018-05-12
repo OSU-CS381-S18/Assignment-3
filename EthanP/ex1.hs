@@ -33,11 +33,44 @@ rankP prog = rank prog 0
 rank :: Prog -> Rank -> Maybe Rank -- Auxiliary function
 rank [] r = Just r
 rank (prog:stack) r = if n <= r
-                      then rank stack ((r-n)+m)
-                      else Nothing
-                      where (n,m) = rankC prog
+                      then rank stack ((r-n)+m) -- ((r-n)+m) calculates the rank current Rank r - the expected number of elements the
+                      else Nothing --                operation takes n + the number of elements the opperation puts back onto the stack m. 
+                      where (n,m) = rankC prog--     --Example: Let current stack size be 3 = r Add(2,1) n = 2 and m = 2 ((3-2)+1) = 2 the new stack rank/size.
 -- Problem b --
+-- Reusing some code from HW2
+type Stack = [Int]
+type D = Maybe Stack -> Maybe Stack
+
+sem :: Prog -> D
+sem [] stack = stack
+
+sem (x:xs) (Just c) = if (sem xs(semCmd x (Just c))) == Nothing
+                      then Nothing
+                      else (sem xs(semCmd x (Just c)))
+
+semCmd :: Cmd -> D
+semCmd ADD(Just list) = if length list == 0
+                        then Nothing
+                        else if length list == 1
+                        then Nothing
+                        else Just (((head list) + (head (tail list))) : drop 2 list)
+
+semCmd MULT(Just list) = if length list == 0
+                       then Nothing 
+                       else if length list == 1
+                       then Nothing
+                       else Just (((head list) * (head (tail list))) : drop 2 list)
+
+semCmd DUP(Just list) = if length list == 0
+                       then Nothing 
+                       else Just ((list !! 0) : list)                     
 
 
+typeCorrect ::  Prog -> Bool
+typeCorrect prog = rankP prog /= Nothing
 
+semStatTC :: Prog -> Maybe(Maybe Stack)
+semStatTC prog | typeCorrect prog = Just (sem prog (Just([])))
+               | otherwise = Nothing
+                
 ------------------- Part 2 ------------------------------------------
