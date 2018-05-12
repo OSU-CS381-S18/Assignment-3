@@ -63,8 +63,18 @@ semCmd MULT(Just list) = if length list == 0
 
 semCmd DUP(Just list) = if length list == 0
                        then Nothing 
-                       else Just ((list !! 0) : list)                     
-
+                       else Just ((list !! 0) : list)
+                       
+semCmd INC(Just list) = if length list == 0
+                      then Nothing
+                      else Just(((head list) + 1) : drop 1 list)
+                      
+semCmd SWAP (Just (x:y:list)) = if length list <= 1
+                              then Nothing
+                              else Just(y:x:list)
+semCmd (POP k) (Just list) = if length list == 0 || (length list) < k
+                      then Nothing
+                      else Just(drop k list)
 
 typeCorrect ::  Prog -> Bool
 typeCorrect prog = rankP prog /= Nothing
