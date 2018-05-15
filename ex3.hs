@@ -32,3 +32,22 @@ in the previous question, f has a condition for the second argument
 that g does not.
 
 --}
+
+--Part B)
+--h :: [b] -> [(a, b)] -> [b]
+
+h x y = if not (null x) then map snd y else x
+
+--Part C)
+--k :: (a -> b) -> ((a -> b) -> a) -> b 
+
+k m n = m ( n (m))
+
+--Part D)
+{--
+No this does not work. The operation (a -> b) means in words is given any type a, 
+it will return any type b thats not of type a. Since Haskell is a strongly typed 
+language, it can not change the type of a to any other type using polymorphism. 
+Polymorphism takes a type and returns the same type. But that type may be any type.
+--}
+
