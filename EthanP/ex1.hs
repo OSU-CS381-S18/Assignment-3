@@ -49,6 +49,7 @@ sem (x:xs) (Just c) = if (sem xs(semCmd x (Just c))) == Nothing
                       else (sem xs(semCmd x (Just c)))
 
 semCmd :: Cmd -> D
+semCmd (LD x) (Just list) = (Just (x:list))
 semCmd ADD(Just list) = if length list == 0
                         then Nothing
                         else if length list == 1
@@ -69,7 +70,7 @@ semCmd INC(Just list) = if length list == 0
                       then Nothing
                       else Just(((head list) + 1) : drop 1 list)
                       
-semCmd SWAP (Just (x:y:list)) = if length list <= 1
+semCmd SWAP (Just (x:y:list)) = if length list == 0
                               then Nothing
                               else Just(y:x:list)
 semCmd (POP k) (Just list) = if length list == 0 || (length list) < k
@@ -82,5 +83,17 @@ typeCorrect prog = rankP prog /= Nothing
 semStatTC :: Prog -> Maybe(Maybe Stack)
 semStatTC prog | typeCorrect prog = Just (sem prog (Just([])))
                | otherwise = Nothing
+
+p :: Prog
+p = [LD 3,DUP,ADD,DUP,MULT,LD 5, LD 4, INC, SWAP, POP 1]
+
+q :: Prog
+q = [LD 3,ADD]
+e = []
+
+empty = Just []
+test1 = sem p empty
+test2 = sem q empty
+test3 = sem e empty 
                 
 ------------------- Part 2 ------------------------------------------
